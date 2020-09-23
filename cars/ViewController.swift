@@ -83,7 +83,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         if !UserDefaults.standard.bool(forKey: "firstLaunch") {
             loadData()
-            print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$      FIRST              $$$$$$$$$$$$$$$$")
         }
         UserDefaults.standard.set(true, forKey: "firstLaunch")
         segmentedControl.selectedSegmentIndex = UserDefaults.standard.integer(forKey: "selectedIndex")
@@ -93,7 +92,6 @@ class ViewController: UIViewController {
     }
     
     func presentCar(){
-//        segmentedControl.backgroundColor = car.color as! UIColor
         makeLabel.text = car.make
         modelLabel.text = car.model
         lastStartedLabel.text = dateFormatter.string(from: car.lastDriven ?? Date())
@@ -104,17 +102,6 @@ class ViewController: UIViewController {
     }
 
     func loadData() {
-        let fetchRequest: NSFetchRequest<Car> = Car.fetchRequest()
-        do {
-            let results = try context.fetch(fetchRequest)
-            if results.isEmpty {
-                print("isEmpty")
-            } else {
-                return
-            }
-        } catch let error {
-            print(error)
-        }
         guard let path = Bundle.main.path(forResource: "data", ofType: "plist"), let arrayOfDictionaries = NSArray(contentsOfFile: path) else { return }
         for dictionary in arrayOfDictionaries {
             guard let entity = NSEntityDescription.entity(forEntityName: "Car", in: context) else { return }
@@ -140,8 +127,6 @@ class ViewController: UIViewController {
     func getColor(dictionary: [String : Int]) -> UIColor {
         guard let red = dictionary["red"], let green = dictionary["green"], let blue = dictionary["blue"] else { return UIColor()}
         return UIColor(red: CGFloat(red/255), green: CGFloat(green/255), blue: CGFloat(blue/255), alpha: 1)
-    }
-    
-    
+    }    
 }
 
